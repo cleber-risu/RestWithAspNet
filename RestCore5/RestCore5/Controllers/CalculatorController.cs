@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace RestCore5.Controllers
@@ -27,14 +26,20 @@ namespace RestCore5.Controllers
             return BadRequest("Invalid input");
         }
 
-        private int ConvertToDecimal(string firstNumber)
+        private decimal ConvertToDecimal(string strNumber)
         {
-            throw new NotImplementedException();
+            decimal decimalValue;
+            return decimal.TryParse(strNumber, out decimalValue) ? decimalValue : 0; 
         }
 
-        private bool isNumeric(string firstNumber)
+        private bool isNumeric(string strNumber)
         {
-            throw new NotImplementedException();
+            double number;
+            return double.TryParse(
+                strNumber, 
+                System.Globalization.NumberStyles.Any, 
+                System.Globalization.NumberFormatInfo.InvariantInfo, 
+                out number);
         }
     }
 }
