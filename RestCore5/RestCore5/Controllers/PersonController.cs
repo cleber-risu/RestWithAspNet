@@ -6,7 +6,7 @@ using RestCore5.Services;
 namespace RestCore5.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PersonController : ControllerBase
     {
         
