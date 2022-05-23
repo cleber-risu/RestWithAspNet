@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RestCore5.Model;
@@ -14,16 +15,6 @@ namespace RestCore5.Services.Implementations
             _context = context;
         }
 
-        public Person Create(Person person)
-        {
-            return person;
-        }
-
-        public void Delete(long id)
-        {
-            
-        }
-
         public List<Person> FindAll()
         {
             return _context.Persons.ToList();
@@ -31,19 +22,65 @@ namespace RestCore5.Services.Implementations
 
         public Person FindById(long id)
         {
-            return new Person
+            //_context.Persons.First(id);
+            return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
+        }
+
+        public Person Create(Person person)
+        {
+            try
             {
-                Id = 1,
-                FirstName = "Alfonso",
-                LastName = "Cabral Lacoste",
-                Address = "Uberlandia - Minas Gerais - Brasil",
-                Gender = "Male",
-            };
+                _context.Add(person);   
+                _context.SaveChanges();
+                return person;
+            }
+            catch (Exception ex)
+            {                
+                throw ex;
+            }
         }
 
         public Person Update(Person person)
         {
+            if (!Exists(person.Id)) return new Person();
+
+            var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(person.Id));
+
+            if (result != null) 
+            {
+                try
+                {
+                    _context.Entry(result).CurrentValues.SetValues(person);
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {                
+                    throw ex;
+                }
+            }
             return person;
+        }
+
+        public void Delete(long id)
+        {
+            var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
+            if (result != null) 
+            {
+                try
+                {
+                    _context.Persons.Remove(result);
+                    _context.SaveChanges();
+                }
+                catch (Exception ex)
+                {                
+                    throw ex;
+                }
+            }
+        }
+
+        private bool Exists(long id)
+        {
+            return _context.Persons.Any(p => p.Id.Equals(id));
         }
     }
 }
