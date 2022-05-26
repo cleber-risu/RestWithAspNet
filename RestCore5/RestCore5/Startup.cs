@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using RestCore5.Model.Context;
 using RestCore5.Business.Implementations;
 using RestCore5.Business;
+using RestCore5.Repository;
+using RestCore5.Repository.Implementations;
 
 namespace RestCore5
 {
@@ -43,6 +45,7 @@ namespace RestCore5
             services.AddApiVersioning();
 
             // Dependency Injection
+            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 
             services.AddSwaggerGen(c =>
