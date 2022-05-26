@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestCore5.Business;
 using RestCore5.Model;
-using RestCore5.Services;
 
 namespace RestCore5.Controllers
 {
@@ -12,9 +12,9 @@ namespace RestCore5.Controllers
     {
         
         private readonly ILogger<PersonController> _logger;
-        private readonly IPersonService _personService;
+        private readonly IPersonBusiness _personService;
 
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personService)
         {
             _logger = logger;
             _personService = personService;

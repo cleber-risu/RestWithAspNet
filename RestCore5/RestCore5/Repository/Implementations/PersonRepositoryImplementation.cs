@@ -4,13 +4,13 @@ using System.Linq;
 using RestCore5.Model;
 using RestCore5.Model.Context;
 
-namespace RestCore5.Services.Implementations
+namespace RestCore5.Repository.Implementations
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonRepositoryImplementation : IPersonRepository
     {
         private MySQLContext _context;
 
-        public PersonServiceImplementation(MySQLContext context)
+        public PersonRepositoryImplementation(MySQLContext context)
         {
             _context = context;
         }
@@ -22,7 +22,6 @@ namespace RestCore5.Services.Implementations
 
         public Person FindById(long id)
         {
-            //_context.Persons.First(id);
             return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
         }
 
@@ -78,7 +77,7 @@ namespace RestCore5.Services.Implementations
             }
         }
 
-        private bool Exists(long id)
+        public bool Exists(long id)
         {
             return _context.Persons.Any(p => p.Id.Equals(id));
         }

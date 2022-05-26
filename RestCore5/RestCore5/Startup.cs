@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestCore5.Model.Context;
-using RestCore5.Services;
-using RestCore5.Services.Implementations;
+using RestCore5.Business.Implementations;
+using RestCore5.Business;
 
 namespace RestCore5
 {
@@ -43,7 +43,7 @@ namespace RestCore5
             services.AddApiVersioning();
 
             // Dependency Injection
-            services.AddScoped<IPersonService, PersonServiceImplementation>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 
             services.AddSwaggerGen(c =>
             {
