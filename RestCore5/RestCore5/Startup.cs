@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RestCore5.Model.Context;
+using RestCore5.Business.Implementations;
+using RestCore5.Business;
+using RestCore5.Repository;
+using RestCore5.Repository.Implementations;
 
 namespace RestCore5
 {
@@ -28,6 +27,27 @@ namespace RestCore5
         {
 
             services.AddControllers();
+
+            var connection = Configuration.GetConnectionString("MySqlConnection");
+            var serverVersion = ServerVersion.AutoDetect(connection);
+            
+            services.AddDbContext<MySQLContext>(
+            dbContextOptions => dbContextOptions
+                .UseMySql(connection, serverVersion)
+                // The following three options help with debugging, but should
+                // be changed or removed for production.
+                //.LogTo(Console.WriteLine, LogLevel.Information)
+                //.EnableSensitiveDataLogging()
+                //.EnableDetailedErrors()
+            );
+
+            // Version API
+            services.AddApiVersioning();
+
+            // Dependency Injection
+            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestCore5", Version = "v1" });
